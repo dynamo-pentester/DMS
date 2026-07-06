@@ -65,6 +65,37 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
+// ---- CORS ----
+// Origins are configured in appsettings.json under Cors:AllowedOrigins.
+// Add your frontend dev-server URL(s) there — no code change needed.
+// Auth is Bearer-header-based, so AllowCredentials() is intentionally omitted.
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? Array.Empty<string>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        if (builder.Environment.IsDevelopment() && allowedOrigins.Length == 0)
+        {
+            // Fallback safety net so the API isn't CORS-blocked even if someone
+            // clones without editing appsettings.json first.
+            policy.WithOrigins(
+                    "http://localhost:3000",
+                    "http://localhost:5173",
+                    "http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+        else
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+    });
+});
+
 // ---- Hangfire ----
 builder.Services.AddHangfire(cfg => cfg
     .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -76,7 +107,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Driver.API", Version = "v1" });
-    // Adds the Authorize button to Swagger UI so you can paste your JWT token
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name         = "Authorization",
@@ -104,7 +134,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// ---- Seed roles on startup (design doc §4.1 - reseed/rename freely, no schema impact) ----
+// ---- Seed roles on startup ----
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
@@ -118,10 +148,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// UseCors must come after UseRouting and before UseAuthentication/UseAuthorization
+app.UseCors("FrontendPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHangfireDashboard(); // lock this down behind auth before production - see README
+app.UseHangfireDashboard();
 RecurringJob.AddOrUpdate<ExpiryAlertJob>("expiry-check", j => j.RunAsync(), Cron.Daily);
 
 app.MapControllers();
