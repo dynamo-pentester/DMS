@@ -1,0 +1,45 @@
+import { ROLES, ALL_ROLES } from '../constants/roles';
+
+export interface ModulePermissions {
+  read: string[];
+  write: string[];
+}
+
+export const MODULE_PERMISSIONS: Record<string, ModulePermissions> = {
+  dashboard: {
+    read: [...ALL_ROLES],
+    write: [...ALL_ROLES],
+  },
+  drivers: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.MANAGER],
+  },
+  licenses: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.MANAGER],
+  },
+  medical: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.SAFETY_OFFICER, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.SAFETY_OFFICER, ROLES.MANAGER],
+  },
+  trainings: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.SAFETY_OFFICER, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.HR_EXECUTIVE, ROLES.SAFETY_OFFICER, ROLES.MANAGER],
+  },
+  incidents: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.SAFETY_OFFICER, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.SAFETY_OFFICER, ROLES.MANAGER],
+  },
+  plantMovements: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.GATE_SECURITY, ROLES.TRANSPORT_COORDINATOR, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.GATE_SECURITY, ROLES.TRANSPORT_COORDINATOR, ROLES.MANAGER],
+  },
+  transporters: {
+    read: [ROLES.SYSTEM_ADMIN, ROLES.TRANSPORT_COORDINATOR, ROLES.MANAGER],
+    write: [ROLES.SYSTEM_ADMIN, ROLES.TRANSPORT_COORDINATOR, ROLES.MANAGER],
+  },
+  notifications: {
+    read: [...ALL_ROLES],
+    write: [...ALL_ROLES],
+  },
+};
