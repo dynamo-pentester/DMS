@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>DriverDms.Application</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- AutoMapper removed: DriverService already hand-maps its one entity, so nothing
+         in this codebase calls it. The referenced version (12.0.1) has a confirmed
+         high-severity CVE (GHSA-rvv3-g6hj-g44x) that will never be patched - the
+         maintainer moved AutoMapper to a commercial license (July 2025) starting with
+         the versions that DO have the fix (15.1.1+/16.x). Rather than pull this
+         project into a licensing question over a dependency nothing uses, it's
+         removed. If real mapping complexity shows up later, evaluate Mapperly
+         (compile-time, MIT-licensed, no runtime reflection) instead. -->
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <!-- Required for DbSet<T> used in IApplicationDbContext. Abstractions-only package,
+         not the SqlServer provider - keeps the dependency rule intact since Application
+         still doesn't know or care which database Infrastructure actually uses. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Driver.Domain\Driver.Domain.csproj" />
+  </ItemGroup>
+</Project>

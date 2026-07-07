@@ -1,0 +1,59 @@
+import type { SearchParams } from "./common";
+
+// Mirrors DriverDms.Application.DTOs.DriverDto
+export interface Driver {
+  driverId: number;
+  driverCode: string;
+  fullName: string;
+  fatherName?: string | null;
+  dateOfBirth: string;
+  mobile: string;
+  address?: string | null;
+  bloodGroupName?: string | null;
+  aadhaarLast4?: string | null;
+  emergencyContactName?: string | null;
+  emergencyContactRelation?: string | null;
+  emergencyContactPhone?: string | null;
+  remarks?: string | null;
+  currentStatusName: string;
+  currentTransporterName?: string | null;
+}
+
+// Mirrors CreateDriverRequest
+export interface CreateDriverRequest {
+  fullName: string;
+  fatherName?: string;
+  dateOfBirth: string;
+  mobile: string;
+  address?: string;
+  bloodGroupId?: number;
+  aadhaarNo?: string;
+  emergencyContactName?: string;
+  emergencyContactRelation?: string;
+  emergencyContactPhone?: string;
+}
+
+// Mirrors UpdateDriverRequest
+export interface UpdateDriverRequest {
+  fullName: string;
+  fatherName?: string;
+  dateOfBirth: string;
+  mobile: string;
+  address?: string;
+  bloodGroupId?: number;
+  emergencyContactName?: string;
+  emergencyContactRelation?: string;
+  emergencyContactPhone?: string;
+  remarks?: string;
+}
+
+export interface UpdateDriverStatusRequest {
+  newStatusId: number;
+  reason?: string;
+}
+
+// Mirrors DriverSearchRequest
+export interface DriverSearchParams extends SearchParams {
+  searchTerm?: string;
+  statusId?: number;
+}
