@@ -1,0 +1,30 @@
+// Base paths per controller. Full base URL comes from VITE_API_BASE_URL (see services/api.js).
+export const API_ENDPOINTS = {
+  AUTH: {
+    LOGIN: "/auth/login",
+    REGISTER: "/auth/register",
+  },
+  DRIVERS: "/drivers",
+  LICENSES: "/licenses",
+  MEDICAL_RECORDS: "/medical-records",
+  TRAININGS: "/trainings",
+  INCIDENTS: "/incidents",
+  PLANT_MOVEMENTS: "/plant-movements",
+  TRANSPORTERS: "/transporters",
+  NOTIFICATIONS: "/notifications",
+  LOOKUPS: {
+    BLOOD_GROUPS: "/lookups/blood-groups",
+    ENDORSEMENTS: "/lookups/endorsements",
+    VEHICLE_TYPES: "/lookups/vehicle-types",
+    DRIVER_STATUS_TYPES: "/lookups/driver-status-types",
+    FITNESS_STATUSES: "/lookups/fitness-statuses",
+    INCIDENT_TYPES: "/lookups/incident-types",
+    SEVERITY_LEVELS: "/lookups/severity-levels",
+    PENALTY_TYPES: "/lookups/penalty-types",
+    PURPOSE_TYPES: "/lookups/purpose-types",
+    GATE_NUMBERS: "/lookups/gate-numbers",
+    TRAINING_TYPES: "/lookups/training-types",
+    NOTIFICATION_ENTITY_TYPES: "/lookups/notification-entity-types",
+    NOTIFICATION_STATUSES: "/lookups/notification-statuses",
+  },
+};
