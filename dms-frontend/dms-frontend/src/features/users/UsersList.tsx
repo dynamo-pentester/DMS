@@ -52,7 +52,7 @@ export function UsersList() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/api/users", { params: { page, pageSize: PAGE_SIZE } });
+      const res = await api.get("/users", { params: { page, pageSize: PAGE_SIZE } });
       setUsers(res.data.items || res.data || []);
       setTotalCount(res.data.totalCount || res.data.length || 0);
     } catch { toast.error("Failed to load users"); } finally { setLoading(false); }
@@ -81,11 +81,11 @@ export function UsersList() {
       setSubmitting(true);
       if (editingUser) {
         const payload: UpdateUserRequest = { firstName: formData.firstName, lastName: formData.lastName, phoneNumber: formData.phoneNumber, role: formData.role, isActive: formData.isActive };
-        await api.put(`/api/users/${editingUser.id}`, payload);
+        await api.put(`/users/${editingUser.id}`, payload);
         toast.success("User updated");
       } else {
         const payload: CreateUserRequest = { firstName: formData.firstName, lastName: formData.lastName, email: formData.email, userName: formData.userName, password: formData.password, phoneNumber: formData.phoneNumber, role: formData.role };
-        await api.post("/api/users", payload);
+        await api.post("/users", payload);
         toast.success("User created");
       }
       setFormOpen(false);
@@ -99,19 +99,18 @@ export function UsersList() {
     if (!deleteOpen) return;
     try {
       setDeleting(true);
-      await api.delete(`/api/users/${deleteOpen.id}`);
+      await api.delete(`/users/${deleteOpen.id}`);
       toast.success("User removed");
       setDeleteOpen(null);
       fetchUsers();
     } catch (err: any) { toast.error(err.response?.data?.message || "Delete failed"); } finally { setDeleting(false); }
   };
 
-  const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleResetPassword = async () => {
     if (!resetPwOpen) return;
     try {
       setResetSubmitting(true);
-      await api.post(`/api/users/${resetPwOpen.id}/reset-password`, { newPassword });
+      await api.post(`/users/${resetPwOpen.id}/reset-password`, { newPassword });
       toast.success("Password reset successfully");
       setResetPwOpen(null);
       setNewPassword("");
@@ -269,7 +268,7 @@ export function UsersList() {
 
       {/* Reset Password Modal */}
       <AppModal isOpen={!!resetPwOpen} onClose={() => { setResetPwOpen(null); setNewPassword(""); }} title="Reset Password">
-        <form onSubmit={handleResetPassword} className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); handleResetPassword(); }} className="space-y-4">
           <div className="rounded-xl bg-amber-50 dark:bg-amber-900/20 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
             Resetting password for <strong>{resetPwOpen?.firstName} {resetPwOpen?.lastName}</strong>
           </div>

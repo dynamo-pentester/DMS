@@ -32,7 +32,8 @@ let isLoggingOut = false;
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401 && !isLoggingOut) {
+    const isLoginRequest = error.config?.url?.endsWith("/auth/login");
+    if (error.response?.status === 401 && !isLoggingOut && !isLoginRequest) {
       isLoggingOut = true;
       useAuthStore.getState().logout();
       window.location.href = "/login?sessionExpired=1";

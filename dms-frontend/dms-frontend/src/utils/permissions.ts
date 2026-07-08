@@ -98,7 +98,7 @@ export const ROLE_MODULE_MATRIX: Record<Role, Record<Module, PermissionLevel>> =
     Incidents: "CRUD",
     PlantMovements: "CRUD",
     Reports: "Full",
-    Users: "CRUD",
+    Users: "None",
   },
 };
 
