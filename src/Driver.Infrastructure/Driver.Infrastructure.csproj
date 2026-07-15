@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>DriverDms.Infrastructure</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.14" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.14" />
+    <!-- Pinned explicitly: something in the chain above floors this below the patched
+         version. This is a real, recently-published .NET runtime CVE (CVE-2026-33116,
+         GHSA-37gx-xxp4-5rgx / GHSA-w3x6-4m5h-cxqf, an infinite-loop DoS in EncryptedXml).
+         Fixed versions per .NET line: 8.0.3 / 9.0.15 / 10.0.6 - NOT 10.0.0, which still
+         has the bug despite matching the .NET 10 version number. Pin the actual fixed
+         version, not just "any 10.x". -->
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Driver.Application\Driver.Application.csproj" />
+    <ProjectReference Include="..\Driver.Domain\Driver.Domain.csproj" />
+  </ItemGroup>
+</Project>
